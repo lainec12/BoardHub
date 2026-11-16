@@ -1,0 +1,17 @@
+name: BoardHub tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare source archive
+        if: hashFiles('BoardHub-source.zip') != ''
+        run: unzip -o BoardHub-source.zip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci
+      - run: npm test
